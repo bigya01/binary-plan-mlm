@@ -3,3 +3,7 @@ env/
 lib/
 __pycache__/
 .vscode/
+tree.DOT
+test.html
+tmp.html
+tmp.DOT
