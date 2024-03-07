@@ -2,23 +2,15 @@ import streamlit as st
 import networkx as nx
 import streamlit.components.v1 as components
 from pyvis.network import Network
-
+from options import options as graph_options
 
 def genarate_graph():
-    nx_graph = nx.cycle_graph(10)
-    nx_graph.nodes[1]['title'] = 'Number 1'
-    nx_graph.nodes[1]['group'] = 1
-    nx_graph.nodes[3]['title'] = 'I belong to a different group!'
-    nx_graph.nodes[3]['group'] = 10
-    nx_graph.add_node(20, size=20, title='couple', group=2)
-    nx_graph.add_node(21, size=15, title='couple', group=2)
-    nx_graph.add_edge(20, 21, weight=5)
-    nx_graph.add_node(25, size=25, label='lonely',
-                      title='lonely node', group=3)
-
-    nt = Network("500px", "500px", notebook=True, heading='')
-    nt.from_nx(nx_graph)
-    nt.show_buttons(filter_=['physics'])
+    nt = Network(notebook=True, heading='', cdn_resources='remote')
+    nt.from_DOT("tree.DOT")
+    # nt.from_nx(nx.complete_graph(5))
+    nt.toggle_physics(True)
+    nt.set_options(graph_options)
+    # nt.show_buttons()
     nt.show('test.html')
 
 
