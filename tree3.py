@@ -43,7 +43,8 @@ class BinaryTree:
                         print ("items exist")
                     node.left = Node(val)
                 elif side == 'r':
-                    node.right = Node(val)
+                    if node.right is not None :
+                        node.right = Node(val)
                 else:
                     print("Invalid side.")
 
