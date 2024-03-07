@@ -3,6 +3,7 @@ class Node:
         self.val = val
         self.left = None
         self.right = None
+        self.list=[]
 
 class BinaryTree:
     def __init__(self):
@@ -42,6 +43,11 @@ class BinaryTree:
         if node.val==key:
              return node
         return self.search(node.right,key)
+    def preorder_traversal(self,root):
+        if root is not None:
+            list.append(root)
+            self.preorder_traversal(root.left)
+            self.preorder_traversal(root.right)
     def display_t(self, node):
         def display_h(node):
             if node is None:
