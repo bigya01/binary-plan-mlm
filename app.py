@@ -31,7 +31,7 @@ def main():
         st.session_state.tree = BinaryMLMTree()
 
     #program begins here 
-    st.title("Binary MLM Simulator")
+    st.title("Binary MLM Simulation")
     placeholder = st.empty()
     if st.session_state.tree.root is None:
         with placeholder.container():

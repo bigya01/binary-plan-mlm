@@ -85,7 +85,7 @@ class BinaryMLMTree:
                 res += f"{node.val} -> {node.left.val};"
             if node.left is None and node.right is None:
                 res += f"{node.val};"
-        res = 'diagraph mlm {\n'
+        res = 'digraph mlm {\n'
         generate_DOT_r(self.root)
         res += '\n}'
         return res
