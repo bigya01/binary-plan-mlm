@@ -11,18 +11,17 @@ class BinaryTree:
         """
         self.root = None
 
-    def insert(self):
+    def insert(self,val,parent_key,side):
         if self.root is None:
-            val = int(input("Enter root value: "))
             self.root = Node(val)
         else:
-            parent_key = int(input("Enter parent key: "))
+            # parent_key = int(input("Enter parent key: "))
             node = self.search(self.root, parent_key)
             if node is None:
                 print("Parent key not found.")
             else:
-                side = input("Insert in left or right (l/r)? ").lower()
-                val = int(input("Enter value: "))
+                # side = input("Insert in left or right (l/r)? ").lower()
+                # val = int(input("Enter value: "))
                 if side == 'l':
                     if node.left is not None :
                         print ("items exist")
@@ -66,7 +65,7 @@ while True:
     choice = input("Enter your choice: ")
 
     if choice == '1':
-        tree.insert()
+        tree.insert(val,parent_key,side)
     elif choice == '2':
         key = int(input("Enter key to search: "))
         if tree.search(tree.root, key):
