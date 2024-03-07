@@ -1,11 +1,5 @@
 class Node:
     def __init__(self, val):
-        """
-        Initializes a node in the binary tree.
-
-        Args:
-            val: The value to be stored in the node.
-        """
         self.val = val
         self.left = None
         self.right = None
@@ -18,15 +12,6 @@ class BinaryTree:
         self.root = None
 
     def insert(self):
-        """
-        Inserts a new node into the binary tree.
-
-        - If the tree is empty, prompts the user for the root value and creates the root node.
-        - Otherwise, prompts the user for the parent key and the value to be inserted.
-        - Searches for the parent node.
-        - If the parent node is found, prompts the user for the side ('l' or 'r') to insert the new node and creates the new node as the left or right child of the parent.
-        - If the parent node is not found, informs the user.
-        """
         if self.root is None:
             val = int(input("Enter root value: "))
             self.root = Node(val)
@@ -44,27 +29,20 @@ class BinaryTree:
                     node.left = Node(val)
                 elif side == 'r':
                     if node.right is not None :
-                        node.right = Node(val)
+                         print("items exist")
+                    node.right = Node(val)
                 else:
                     print("Invalid side.")
 
     def search(self, node, key):
         if node is None or node.val == key:
             return node
-        if key < node.val:
-            return self.search(node.left, key)
-        else:
-            return self.search(node.right, key)
-#     def display_helper(self,node, parent_val=None):
-#         if node is None:
-#             return
-#         if parent_val is not None:
-#             print(f"{parent_val} -> {node.val}")
-#             print(f"{parent_val} -> {node.val}")  # Print connection to parent first
-#   # Print connection to parent first
-#         self.display_helper(node.left, node.val)  # Visit left child with current node as parent
-#         self.display_helper(node.right, node.val)  # Visit right child with current node as parent
-    
+        result=self.search(node.left,key)
+        if result is not None:
+             return result
+        if node.val==key:
+             return node
+        return self.search(node.right,key)
     def display_t(self, node):
         def display_h(node):
             if node is None:
