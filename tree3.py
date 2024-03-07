@@ -39,6 +39,8 @@ class BinaryTree:
                 side = input("Insert in left or right (l/r)? ").lower()
                 val = int(input("Enter value: "))
                 if side == 'l':
+                    if node.left is not None :
+                        print ("items exist")
                     node.left = Node(val)
                 elif side == 'r':
                     node.right = Node(val)
