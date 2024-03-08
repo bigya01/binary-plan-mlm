@@ -18,6 +18,6 @@ pip install requirements.txt
 ```
 
 ```bash
-streamlit run app.py
+streamlit run Binary\ Plan\ MLM.py
 ```
 
