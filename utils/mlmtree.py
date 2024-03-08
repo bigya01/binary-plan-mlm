@@ -80,44 +80,27 @@ class BinaryMLMTree:
             if node is None:
                 return
             if node.left is not None:
-                res += f"{node.val} -> {node.left.val};"
+                res += f"{node.val} -> {node.left.val};\n"
             if node.right is not None:
-                res += f"{node.val} -> {node.left.val};"
+                res += f"{node.val} -> {node.right.val};\n"
             if node.left is None and node.right is None:
-                res += f"{node.val};"
+                res += f"{node.val};\n"
+            generate_DOT_r(node.left)
+            generate_DOT_r(node.right)
         res = 'digraph mlm {\n'
+        if self.root:
+            res +=  f"{self.root.val} [color= \"Red\"];\n"
         generate_DOT_r(self.root)
-        res += '\n}'
+        res += '}'
         return res
 
 
 if __name__ == '__main__':
     tree = BinaryMLMTree()
-
-    while True:
-        print("\n1. Insert")
-        print("2. Search")
-        print("3. Display")
-        print("4. Exit")
-
-        choice = input("Enter your choice: ")
-
-        if choice == '1':
-            tree.insert(val, parent_key, side)
-        elif choice == '2':
-            key = int(input("Enter key to search: "))
-            if tree.search(tree.root, key):
-                print("Key found.")
-            else:
-                print("Key not found.")
-        elif choice == '3':
-            print("Tree structure: ")
-            tree.display_t(tree.root)
-            print()
-        elif choice == '4':
-            break
-        else:
-            print("Invalid choice.")
+    tree.insert_root('bindu')
+    tree.insert('krishant','bindu', 'Left')
+    tree.insert('krish', 'krishant', 'Right')
+    print(tree.generate_DOT())
 
 
 #
