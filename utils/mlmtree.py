@@ -18,38 +18,28 @@ class BinaryMLMTree:
     def insert_root(self, val):
         self.root = Node(val)
 
-    def insert(self, val, parent_key, side):
-        node = self.search(parent_key)
-        if node is None:
-            print("Parent key not found.")
-        else:
-            if side == 'Left':
-                if node.left is not None:
-                    print("items exist")
+    def insert(self, val, parent_key):
+        node = self.search(self.root, parent_key)
+        def insert_node_with_spillover(node, val):
+            if not node.left:
                 node.left = Node(val)
-            elif side == 'Right':
-                if node.right is not None:
-                    print("items exist")
+            elif not node.right:
                 node.right = Node(val)
-            else:
-                print("Invalid side.")
+            elif node.left and node.right:
+                #recursion for spillover
+                insert_node_with_spillover(node.left, val)
+        insert_node_with_spillover(node, val)
 
-    def search(self, key):
-        def dfs_search(node, key):
-            if node is None or node.val == key:
-                return node
-            # left search
-            left_result = dfs_search(node.left, key)
-            if left_result:
-                return left_result
-            # right search
-            right_result = dfs_search(node.right, key)
-            if right_result:
-                return right_result
-
-            return None
-
-        return dfs_search(self.root, key)
+    def search(self, node, key):
+        if node is None or node.val == key:
+            return node
+        left_result=self.search(node.left,key)
+        if left_result is not None:
+             return left_result
+        right_result=self.search(node.left,key)
+        if right_result is not None:
+             return right_result
+        return None
 
     def get_nodes(self):
         def get_nodes_r(node):
@@ -98,10 +88,10 @@ class BinaryMLMTree:
 if __name__ == '__main__':
     tree = BinaryMLMTree()
     tree.insert_root('bindu')
-    tree.insert('krishant','bindu', 'Left')
-    tree.insert('krish', 'bindu', 'Right')
-    tree.insert('k2', 'krishant', 'Left')
-    tree.insert('k3', 'krish', 'Right')
+    tree.insert('krishant','bindu')
+    tree.insert('krish', 'bindu')
+    tree.insert('k2', 'krishant')
+    tree.insert('k3', 'krish')
     print(tree.generate_DOT())
 
 

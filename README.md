@@ -4,11 +4,11 @@ A platform for simulating binary plan network marketing
 ## Run instructions
 
 ```bash
-python -m venv .env
+python -m venv env
 ```
 
 ```bash
-source .env/bin/activate
+source env/bin/activate
 ```
 
 ```bash

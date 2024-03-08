@@ -26,9 +26,9 @@ def main():
     def insert_root(user):
         st.session_state.tree.insert_root(user)
 
-    def insert(user, parent, side):
-        print(user,parent,side)
-        st.session_state.tree.insert(user, parent, side)
+    def insert(user, parent):
+        # print(user,parent,side)
+        st.session_state.tree.insert(user, parent)
 
     if "tree" not in st.session_state:  # make it run once
         st.session_state.tree = BinaryMLMTree()
@@ -44,14 +44,12 @@ def main():
             col2.button('Insert', on_click=lambda: insert_root(user))
     else:
         with placeholder.container():
-            col1, col2, col3, col4 = st.columns([2, 1, 1, 1])
+            col1, col2, col3 = st.columns([2, 2, 1])
             parent = col1.selectbox('Where would you like the node to be added?',
                                     st.session_state.tree.get_nodes(), index=None, placeholder="Select parent node..")
             user = col2.text_input('User',
                                    placeholder="Insert User..")
-            side = col3.selectbox('Side',
-                                  ('Left', 'Right', 'Spill'), index=None, placeholder="Insert Value..")
-            col4.button('Insert', on_click=lambda: insert(user, str(parent), str(side)))
+            col3.button('Insert', on_click=lambda: insert(user, str(parent)))
     generate_graph(st.session_state.tree)
 
 
