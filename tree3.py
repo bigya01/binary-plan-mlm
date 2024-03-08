@@ -4,6 +4,11 @@ class Node:
         self.left = None
         self.right = None
         self.list=[]
+        self.signup_com=0
+        self.sales=0
+        self.balance_com=0
+        self.total_com=0
+        self.t_com=0
 
 class BinaryTree:
     def __init__(self):
@@ -12,28 +17,53 @@ class BinaryTree:
         """
         self.root = None
 
-    def insert(self,val,parent_key,side):
+    def insert(self,val):
         if self.root is None:
             self.root = Node(val)
         else:
-            # parent_key = int(input("Enter parent key: "))
+            parent_key = int(input("Enter parent key: "))
             node = self.search(self.root, parent_key)
             if node is None:
                 print("Parent key not found.")
             else:
-                # side = input("Insert in left or right (l/r)? ").lower()
-                # val = int(input("Enter value: "))
+                side = input("Insert in left or right (l/r)? ").lower()
+                val = int(input("Enter value: "))
                 if side == 'l':
                     if node.left is not None :
                         print ("items exist")
                     node.left = Node(val)
+                    node.signup_com+=20
+                    node.t_com+=20
+
                 elif side == 'r':
                     if node.right is not None :
                          print("items exist")
                     node.right = Node(val)
-                else:
-                    print("Invalid side.")
+                    node.signup_com+=20
+                    node.t_com+=20
 
+
+                else:
+                    # print("Invalid side.")
+                     node.balance_com+=5
+                     node.t_com+=5
+    def sales(self):
+         node_key=int(input("enter the node of which you want to add commision of"))
+         node=self.search(self.root,node_key)
+         sales=int(input("enter the sales of the node"))
+         node.sales+=sales
+         node.t_com+=sales
+
+    def total_sales(self,node,key):
+         if node.left is None and node.right is None:
+              return node.total_com
+         else:    
+            if node.left.t_com>node.right.t_com:
+                node.total_com+=node.tcom+ 0.5*node.right.sales
+                return node.total_com
+            else:
+                node.total_com+=node.tcom+ 0.5*node.left.sales
+                return node.total_com
     def search(self, node, key):
         if node is None or node.val == key:
             return node
@@ -71,7 +101,7 @@ while True:
     choice = input("Enter your choice: ")
 
     if choice == '1':
-        tree.insert(val,parent_key,side)
+        tree.insert()
     elif choice == '2':
         key = int(input("Enter key to search: "))
         if tree.search(tree.root, key):
@@ -95,4 +125,4 @@ while True:
 
 
 
-#
+
