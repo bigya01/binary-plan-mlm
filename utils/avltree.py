@@ -21,11 +21,11 @@ class AVLTree:
             else:
                 self.insert(node.left,val)
         else:
-            if node.left is None:
-                node.left = Node(val)  # If left child is None, create a new node
+            if node.right is None:
+                node.right = Node(val)  # If left child is None, create a new node
             else:
                 self.insert(node.right,val)
-        self.balancing(node)
+        # self.balancing(node)
             
     
     def search(self,node,val):
@@ -82,19 +82,24 @@ class AVLTree:
     def balancing(self,node):
             if node is None:
                 return None
-            balance_Factor=self.height(node.left)-self.height(node.right)
+            balance_Factor=self.bf(node)
             if balance_Factor>1:
-                if self.height(node.left)<0:
-                    return self.left_rotate(node.left)
-                node=self.right_rotate(node)
+                if self.height(node.left.right) > self.height(node.left.left):
+                # if self.bf(node.left)<0:
+                    node.left= self.left_rotate(node.left)
+                return self.right_rotate(node)
             elif balance_Factor<-1:
-                if self.height(node.right)>0:
-                    return self.right_rotate(node.right)
-                node=self.left_rotate(node)
+                # if self.bf(node.right)>0:
+                if self.height(node.right.left) > self.height(node.right.right):
+                    node.right= self.right_rotate(node.right)
+                return self.left_rotate(node)
             else: 
                 print("tree is balanced")
-            self.balancing(node.left)
-            self.balancing(node.right)
+            
+            if node.left:
+                 self.balancing(node.left)
+            if node.right:
+                self.balancing(node.right)
     
     def generate_DOT(self):
         def generate_DOT_r(node):
