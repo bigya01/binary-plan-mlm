@@ -14,6 +14,7 @@ def generate_graph(tree):
         dotFile.write(wr)
     nt.from_DOT("tmp.DOT")
     nt.toggle_physics(True)
+    nt.set_options(graph_options)
     nt.show('tmp.html')
     with open('tmp.html', 'r', encoding='utf-8') as htmlFile:
         source_code = htmlFile.read()
@@ -21,16 +22,18 @@ def generate_graph(tree):
 
 
 def main():
+    #use callback for state management (streamlit hacks)
     def insert_root(user):
         st.session_state.tree.insert_root(user)
 
-    def insert(parent, side, user):
+    def insert(user, parent, side):
+        print(user,parent,side)
         st.session_state.tree.insert(user, parent, side)
 
     if "tree" not in st.session_state:  # make it run once
         st.session_state.tree = BinaryMLMTree()
 
-    #program begins here 
+    # program begins here
     st.title("Binary MLM Simulation")
     placeholder = st.empty()
     if st.session_state.tree.root is None:
@@ -48,7 +51,7 @@ def main():
                                    placeholder="Insert User..")
             side = col3.selectbox('Side',
                                   ('Left', 'Right', 'Spill'), index=None, placeholder="Insert Value..")
-            col4.button('Insert', on_click=lambda: insert(user, parent, side))
+            col4.button('Insert', on_click=lambda: insert(user, str(parent), str(side)))
     generate_graph(st.session_state.tree)
 
 
