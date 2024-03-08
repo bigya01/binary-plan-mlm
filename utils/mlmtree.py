@@ -43,7 +43,7 @@ class BinaryMLMTree:
             if left_result:
                 return left_result
             # right search
-            right_result = dfs_search(node.left, key)
+            right_result = dfs_search(node.right, key)
             if right_result:
                 return right_result
 
@@ -99,7 +99,9 @@ if __name__ == '__main__':
     tree = BinaryMLMTree()
     tree.insert_root('bindu')
     tree.insert('krishant','bindu', 'Left')
-    tree.insert('krish', 'krishant', 'Right')
+    tree.insert('krish', 'bindu', 'Right')
+    tree.insert('k2', 'krishant', 'Left')
+    tree.insert('k3', 'krish', 'Right')
     print(tree.generate_DOT())
 
 
