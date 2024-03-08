@@ -8,8 +8,10 @@ python -m venv env
 ```
 
 ```bash
-source env/bin/activate
+linux source env/bin/activate
+windows env/scripts/Activate.ps1
 ```
+
 
 ```bash
 pip install requirements.txt
@@ -18,3 +20,4 @@ pip install requirements.txt
 ```bash
 streamlit run app.py
 ```
+
