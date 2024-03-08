@@ -22,13 +22,13 @@ with col1.container(border=True):
     insert_value = col11.number_input(
         "Insert Node", placeholder="Insert Value", step=1)
     col12.markdown('### ')
-    col12.button('Insert')
+    col12.button('Insert', on_click=insert)
 
 with col2.container(border=True):
     col21, col22 = st.columns(2)
-    insert_value = col21.number_input(
-        "Delete Node", placeholder="Insert Value", step=1)
+    insert_value = col21.selectbox(
+        "Delete Node", placeholder="Insert Value", options=(1,2,3))
     col22.markdown('### ')
-    col22.button('Delete', type="primary")
+    col22.button('Delete', type="primary", on_click=delete)
 
 generate_graph(st.session_state.avltree)
