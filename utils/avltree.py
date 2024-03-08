@@ -16,10 +16,16 @@ class AVLTree:
             self.root = Node(val)
             # node.val=val
         elif val<node.val:
-            self.insert(node.left,val)
+            if node.left is None:
+                node.left = Node(val)  # If left child is None, create a new node
+            else:
+                self.insert(node.left,val)
         else:
-            self.insert(node.right,val)
-        # self.balancing(node)
+            if node.left is None:
+                node.left = Node(val)  # If left child is None, create a new node
+            else:
+                self.insert(node.right,val)
+        self.balancing(node)
             
     
     def search(self,node,val):
@@ -47,7 +53,7 @@ class AVLTree:
                 return self.height(node.left)-self.height(node.right)
         
     def update_height(self,node):
-            return max(self.height(node.left)+self.height(node.right))+1
+            return max(self.height(node.left),self.height(node.right))+1
         
     def left_rotate(self,node):
             y=node.right

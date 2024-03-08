@@ -3,7 +3,7 @@ class Node:
         self.val = val
         self.left = None
         self.right = None
-class BinaryTree:
+class AVLTree:
     def __init__(self):
         """
         Initializes an empty binary tree.
