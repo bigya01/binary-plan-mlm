@@ -13,7 +13,7 @@ def generate_graph(tree):
     with open('tmp.DOT', 'w') as dotFile:
         dotFile.write(wr)
     nt.from_DOT("tmp.DOT")
-    nt.toggle_physics(True)
+    # nt.toggle_physics(True)
     nt.set_options(graph_options)
     nt.show('tmp.html')
     with open('tmp.html', 'r', encoding='utf-8') as htmlFile:
