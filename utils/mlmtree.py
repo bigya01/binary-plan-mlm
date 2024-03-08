@@ -1,8 +1,14 @@
+import settings as s
 class Node:
     def __init__(self, val):
         self.val = val
         self.left = None
         self.right = None
+        self.sales=0
+        self.initial_com=0
+        self.total_com=0
+        self.added_members=0
+
 
     def __str__(self) -> str:
         return self.val
@@ -18,17 +24,52 @@ class BinaryMLMTree:
     def insert_root(self, val):
         self.root = Node(val)
 
+    def update_commission(self,node):
+        if node.left and node.right:
+            node.initial_com+=s.BALANCE_COMMISSION
+        node.initial_com+=node.sales*s.PRODUCT_SOLD_COMMISSION
+
     def insert(self, val, parent_key):
         node = self.search(self.root, parent_key)
+        node.added_members+=1
+        node.initial_com+=s.SIGNUP_COMMISION
         def insert_node_with_spillover(node, val):
             if not node.left:
                 node.left = Node(val)
+                self.update_commission(node)
+
             elif not node.right:
                 node.right = Node(val)
+                self.update_commission(node)
+
             elif node.left and node.right:
+                # node.intial_com+=BALANCE_COMMISSION
                 #recursion for spillover
                 insert_node_with_spillover(node.left, val)
         insert_node_with_spillover(node, val)
+
+    def update_sales(self,node_key,sales):
+        #  node_key=int(input("enter the node of which you want to add commision of"))
+        node=self.search(self.root,node_key)
+        #  sales=int(input("enter the sales of the node"))
+        node.sales+=sales
+        self.update_commission(node)
+
+    def total_sales(self,node):
+        if  node.left is None and node.right is None:
+            return node.sales
+        else:
+            return node.sales +self.total_sales(node.left)+ self.total_sales(node.right)
+            
+    def total_commision(self,node):
+         if node.left is None and node.right is None:
+            return node.initial_com
+         else:    
+            if self.total_sales(node.left)>self.total_sales(node.right):
+                node.total_com+=node.initial_com+ s.SALES_VOLULME_PER*self.total_sales(node.right)
+            else:
+                node.total_com+=node.initial_com+ s.SALES_VOLULME_PER*self.total_sales(node.left)
+            return node.total_com
 
     def search(self, node, key):
         if node is None or node.val == key:
