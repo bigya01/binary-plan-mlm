@@ -9,7 +9,8 @@ class Node:
         self.sales=0
         self.balance_com=0
         self.total_com=0
-        self.t_com=0
+        self.inital_com=0
+        self.total_sales=0
 
 class BinaryTree:
     def __init__(self):
@@ -48,22 +49,28 @@ class BinaryTree:
                     # print("Invalid side.")
                      node.balance_com+=5
                      node.initail_com+=5
-    def sales(self):
+    def update_sales(self):
          node_key=int(input("enter the node of which you want to add commision of"))
          node=self.search(self.root,node_key)
          sales=int(input("enter the sales of the node"))
          node.sales+=sales
          node.initial_com+=sales
+    def tot_sales(self,node):
+         if  node.left is None and node.right is None:
+              return node.total_sales
+         else:
+              total_sales=node.sales +total_sales(node.left)+ total_sales(node.right)
+              return total_sales
 
-    def total_sales(self,node,key):
+    def total_commision(self,node,key):
          if node.left is None and node.right is None:
               return node.total_com
          else:    
-            if node.left.initial_com>node.right.initial_com:
-                node.total_com+=node.initial_com+ 0.5*node.right.sales
+            if node.left.total_sales>node.right.total_sales:
+                node.total_com+=node.initial_com+ 0.5*node.right.total_sales
                 return node.total_com
             else:
-                node.total_com+=node.initial_com+ 0.5*node.left.sales
+                node.total_com+=node.initial_com+ 0.5*node.left.total_sales
                 return node.total_com
     def search(self, node, key):
         if node is None or node.val == key:
