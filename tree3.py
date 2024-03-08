@@ -83,7 +83,8 @@ while True:
         tree.display_t(tree.root)
         print()
     elif choice == '4':
-        break
+        print("traversal")
+        tree.preorder_traversal(tree.root)
     else:
         print("Invalid choice.")
 
