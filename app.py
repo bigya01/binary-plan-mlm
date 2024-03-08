@@ -6,17 +6,13 @@ import pandas as pd
 
 from utils.mlmtree import BinaryMLMTree, Node
 from options import options as graph_options
-import utils.settings as s
+
 
 
 def generate_table(tree):
     dictionary = tree.get_nodes_dict()
     data = pd.DataFrame.from_dict(dictionary)
     data.reset_index(drop=True, inplace=True)
-    data['From Members'] = data['Members Added']*s.s.SIGNUP_COMMISION
-    data['From Sales'] = data['Sales']*s.s.PRODUCT_SOLD_COMMISSION
-    data['From Branched Members'] = data['Total Commission'] - \
-        data['From Members'] - data['From Sales'] - data['Balancing Bonus']
     # print(dictionary)
     # st.dataframe(data, use_container_width=True)
     return data
@@ -47,10 +43,7 @@ def main():
         st.session_state.tree.insert(user, parent)
 
     def change_config(config):
-        s.s.SIGNUP_COMMISION=config[0]
-        s.s.BALANCE_COMMISSION=config[1]
-        s.s.PRODUCT_SOLD_COMMISSION=config[2]
-        s.s.SALES_VOLULME_PER=config[3]
+        st.session_state.tree.set_config(config)
         st.sidebar.success('Applied Settings Sucessfully!')
         
 
@@ -67,7 +60,7 @@ def main():
         v1 = st.slider("Signup Comission", 0, 100, 5)
         v2 = st.slider("Balance Commission", 0, 500, 50)
         v3 = st.slider("Product Sold Comission", 0.0, 1.0, 0.1)
-        v4 = st.slider("Branch Commission", 0, 100, 5)
+        v4 = st.slider("Branch Commission", 0.0, 1.0, 0.5)
         st.button("Apply Settings",
                   on_click=lambda: change_config([v1, v2, v3, v4]))
 
@@ -82,7 +75,7 @@ def main():
         with placeholder.container():
             col1, col2, col3 = st.columns([2, 2, 1])
             parent1 = col1.selectbox('Where would you like the node to be added?',
-                                     st.session_state.tree.get_nodes(), index=None, placeholder="Select parent node..")
+                                     st.session_state.tree.get_nodes(), index=0, placeholder="Select parent node..")
             user = col2.text_input('User',
                                    placeholder="Insert User..")
             col3.button('Add User', on_click=lambda: insert(
@@ -90,7 +83,7 @@ def main():
 
             col1, col2, col3 = st.columns([2, 2, 1])
             parent2 = col1.selectbox('Uadate sales Value',
-                                     st.session_state.tree.get_nodes(), index=None, placeholder="Select parent node..")
+                                     st.session_state.tree.get_nodes(), index=0, placeholder="Select parent node..")
             sale = col2.number_input('Sales',
                                      placeholder="Insert Sales..")
             col3.button('Update', on_click=lambda: update_sales(

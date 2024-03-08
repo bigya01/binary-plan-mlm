@@ -5,4 +5,3 @@ class Settings:
         self.PRODUCT_SOLD_COMMISSION=0.1
         self.SALES_VOLULME_PER=0.5
 
-s = Settings()

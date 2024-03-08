@@ -1,4 +1,4 @@
-import utils.settings as s
+from utils.settings import Settings
 
 
 class Node:
@@ -9,6 +9,7 @@ class Node:
         self.sales = 0
         self.initial_com = 0
         self.total_com = 0
+        self.branch_com = 0
         self.added_members = 0
         self.color = 'blue'
         self.is_Balanced = False
@@ -23,25 +24,32 @@ class BinaryMLMTree:
         Initializes an empty binary tree.
         """
         self.root = None
+        self.settings = Settings()
 
     def insert_root(self, val):
         self.root = Node(val)
         self.root.color = 'Red'
 
+    def set_config(self, config):
+        self.settings.SIGNUP_COMMISION = config[0]
+        self.settings.BALANCE_COMMISSION = config[1]
+        self.settings.PRODUCT_SOLD_COMMISSION = config[2]
+        self.settings.SALES_VOLULME_PER = config[3]
+
     def update_commission(self, node):
         node.initial_com = 0
         if node.left and node.right:
             node.is_Balanced = True
-            node.initial_com += s.s.BALANCE_COMMISSION
-        node.initial_com += (node.sales*s.s.PRODUCT_SOLD_COMMISSION +
-                             node.added_members*s.s.SIGNUP_COMMISION)
+            node.initial_com += self.settings.BALANCE_COMMISSION
+        node.initial_com += (node.sales*self.settings.PRODUCT_SOLD_COMMISSION +
+                             node.added_members*self.settings.SIGNUP_COMMISION)
 
     def insert(self, val, parent_key):
         node = self.search(self.root, parent_key)
         if not node:
             print("Not found")
         node.added_members += 1
-        node.initial_com += s.SIGNUP_COMMISION
+        node.initial_com += self.settings.SIGNUP_COMMISION
 
         def insert_node_with_spillover(node, val):
             if not node.left:
@@ -75,16 +83,18 @@ class BinaryMLMTree:
             return node.sales + self.total_sales(node.left) + self.total_sales(node.right)
 
     def total_commision(self, node):
-        node.total_com = node.initial_com
+        node.branch_com = 0
+        self.update_commission(node)
         if node.left is None and node.right is None:
             return node.initial_com
         else:
             if self.total_sales(node.left) > self.total_sales(node.right):
-                node.total_com += s.s.SALES_VOLULME_PER * \
+                node.branch_com = self.settings.SALES_VOLULME_PER * \
                     self.total_sales(node.right)
             else:
-                node.total_com += s.s.SALES_VOLULME_PER * \
+                node.branch_com = self.settings.SALES_VOLULME_PER * \
                     self.total_sales(node.left)
+            node.total_com = node.branch_com + node.initial_com
             return node.total_com
 
     def search(self, node, key):
@@ -117,9 +127,14 @@ class BinaryMLMTree:
             tmp['Name'] = node.val
             tmp['Sales'] = node.sales
             tmp['Members Added'] = node.added_members
-            tmp['Balancing Bonus'] = 50 if node.is_Balanced else 0
+            tmp['Balancing Bonus'] = self.settings.BALANCE_COMMISSION if node.is_Balanced else 0
+            tmp['From Members Signup'] = node.added_members * \
+                self.settings.SIGNUP_COMMISION
+            tmp['From Sales'] = node.sales * \
+                self.settings.PRODUCT_SOLD_COMMISSION
             self.total_commision(node)
-            tmp['Total Commission'] = node.total_com
+            tmp['From Members Sale'] = node.branch_com
+            tmp['Total Commission'] = self.total_commision(node)
             res.append(tmp)
             get_nodes_r(node.left)
             get_nodes_r(node.right)
