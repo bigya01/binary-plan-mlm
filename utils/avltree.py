@@ -93,13 +93,8 @@ class AVLTree:
                 if self.height(node.right.left) > self.height(node.right.right):
                     node.right= self.right_rotate(node.right)
                 return self.left_rotate(node)
-            else: 
-                print("tree is balanced")
             
-            if node.left:
-                 self.balancing(node.left)
-            if node.right:
-                self.balancing(node.right)
+           
     
     def generate_DOT(self):
         def generate_DOT_r(node):
