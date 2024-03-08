@@ -83,7 +83,7 @@ class BinaryTree:
     def balancing(self,node):
             if node is None:
                 return None
-            balance_Factor=self.height(node)
+            balance_Factor=self.height(node.left)-self.height(node.right)
             if balance_Factor>1:
                 if self.height(node.left)<0:
                     return self.right_rotate(node.left)
@@ -94,6 +94,39 @@ class BinaryTree:
                 node=self.right_rotate(node)
             else: 
                 print("tree is balanced")
-    
-            
+            self.balancing(node.left)
+            self.balancing(node.right)
+    def findlargestnode(self,node):
+         if node is None or node.right is None:
+              return node
+         else:
+              return self.findlargestnode(node.right)
+    def delete(self,node,val):
+        if node is None:
+              print("value not found")
+        elif val<node.data:
+            self.delete(node.left,val)
+        elif val>node.data:
+            self.delete(node.right,val)
+        elif node.left and node.left:
+            temp=self.findlargestnode(node.left)
+            node.val=temp.val
+            self.delete(node.left,temp.val)
+        else:
+            temp=node
+            if node.left is None and node.right is None:
+                node=None
+            elif node.left is not None:
+                node=node.left
+            else:
+                node=node.right
+            del(temp)
+            self.update_height (node)
+            self.bf(node)
+            self.balancing(node)
+
+
+
+
+
             
