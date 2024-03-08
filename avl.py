@@ -24,52 +24,52 @@ class BinaryTree:
                     # if self.root.right is not None :
                     #      print("items exist")
                     self.insert(node.right,val)
-
+                self.balancing(node)
                 # else:
                 #     print("BOTH SIDES ARE ALREADY FILLED")
     
-        def search(self,node,val):
+    def search(self,node,val):
             if node is None or node.val==val:
                 return node
             else:
                 if val<node.val:
-                    return search(node.left,val)
+                    return self.search(node.left,val)
                 else:
-                    return search(node.right,val)
-        def height(self,node):
+                    return self.search(node.right,val)
+    def height(self,node):
             if node is None:
                 return 0
             else:
-                lheight=height(node.left)
-                rheight=height(node.right)
+                lheight=self.height(node.left)
+                rheight=self.height(node.right)
                 if lheight>rheight:
                     return lheight+1
                 else:
                     return rheight+1
-        def bf(self,node):
+    def bf(self,node):
             if node is None:
                 return 0
             else:
-                return height(node.left)-height(node.right)
+                return self.height(node.left)-self.height(node.right)
         
-        def update_height(self,node):
-            return max(height(node.left)+height(node.right))+1
+    def update_height(self,node):
+            return max(self.height(node.left)+self.height(node.right))+1
         
-        def left_rotate(self,node):
+    def left_rotate(self,node):
             y=node.right
             node.right=y.left
             y.left=node
-            update_height(node)
-            update_height(y)
+            self.update_height(node)
+            self.update_height(y)
             return y
         
 
-        def right_rotate(self,node):
+    def right_rotate(self,node):
             y=node.left
             node.left=y.right
             y.right=node
-            update_height(node)
-            update_height(y)
+            self.update_height(node)
+            self.update_height(y)
             return y
         
         # def left_right(self,node):
@@ -80,20 +80,20 @@ class BinaryTree:
         #     node.right=right_rotate(node.right)
         #     return left_rotate(node)
         
-        def balancing(self,node):
+    def balancing(self,node):
             if node is None:
                 return None
-            balance_Factor=height(node)
+            balance_Factor=self.height(node)
             if balance_Factor>1:
-                if height(node.left)<0:
-                    return right_rotate(node.left)
-                node=left_rotate(node)
+                if self.height(node.left)<0:
+                    return self.right_rotate(node.left)
+                node=self.left_rotate(node)
             elif balance_Factor<-1:
-                if height(node.right)>0:
-                    return left_rotate(node.right)
-                node=right_rotate(node)
-
-
-
+                if self.height(node.right)>0:
+                    return self.left_rotate(node.right)
+                node=self.right_rotate(node)
+            else: 
+                print("tree is balanced")
+    
             
             
