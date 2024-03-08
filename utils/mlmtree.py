@@ -1,5 +1,4 @@
 import utils.settings as s
-# import settings as s
 
 
 class Node:
@@ -32,10 +31,10 @@ class BinaryMLMTree:
     def update_commission(self, node):
         node.initial_com = 0
         if node.left and node.right:
-            node.is_Balanced=True
-            node.initial_com += s.BALANCE_COMMISSION
-        node.initial_com += (node.sales*s.PRODUCT_SOLD_COMMISSION +
-                             node.added_members*s.SIGNUP_COMMISION)
+            node.is_Balanced = True
+            node.initial_com += s.s.BALANCE_COMMISSION
+        node.initial_com += (node.sales*s.s.PRODUCT_SOLD_COMMISSION +
+                             node.added_members*s.s.SIGNUP_COMMISION)
 
     def insert(self, val, parent_key):
         node = self.search(self.root, parent_key)
@@ -81,9 +80,11 @@ class BinaryMLMTree:
             return node.initial_com
         else:
             if self.total_sales(node.left) > self.total_sales(node.right):
-                node.total_com += s.SALES_VOLULME_PER*self.total_sales(node.right)
+                node.total_com += s.s.SALES_VOLULME_PER * \
+                    self.total_sales(node.right)
             else:
-                node.total_com += s.SALES_VOLULME_PER*self.total_sales(node.left)
+                node.total_com += s.s.SALES_VOLULME_PER * \
+                    self.total_sales(node.left)
             return node.total_com
 
     def search(self, node, key):
@@ -116,6 +117,7 @@ class BinaryMLMTree:
             tmp['Name'] = node.val
             tmp['Sales'] = node.sales
             tmp['Members Added'] = node.added_members
+            tmp['Balancing Bonus'] = 50 if node.is_Balanced else 0
             self.total_commision(node)
             tmp['Total Commission'] = node.total_com
             res.append(tmp)
