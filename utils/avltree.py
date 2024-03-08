@@ -3,7 +3,9 @@ class Node:
         self.val = val
         self.left = None
         self.right = None
-        self.color = "black"
+
+    def __str__(self) -> str:
+        return str(self.val)
 
 
 class AVLTree:
@@ -13,7 +15,13 @@ class AVLTree:
         """
         self.root = None
 
-    def insert(self, node, val):
+    def insert(self, val):
+        self.root = self.insert_(self.root, val)
+
+    def delete(self, val):
+        self.root = self.delete_(self.root, val)
+
+    def insert_(self, node, val):
         if node is None:
             return Node(val)
             # self.root = Node(val)
@@ -23,13 +31,13 @@ class AVLTree:
             #     # If left child is None, create a new node
             #     node.left = Node(val)
             # else:
-            node.left = self.insert(node.left, val)
+            node.left = self.insert_(node.left, val)
         else:
             # if node.right is None:
             #     # If left child is None, create a new node
             #     node.right = Node(val)
             # else:
-            node.right = self.insert(node.right, val)
+            node.right = self.insert_(node.right, val)
         return self.balancing(node)
 
     def search(self, node, val):
@@ -105,7 +113,7 @@ class AVLTree:
             if node is None:
                 return
             if node is not None:
-                res += f"{node.val} [color= \"{node.color}\"];\n"
+                res += f"{node.val} [color= \"{'red' if node == self.root else 'blue'}\"];\n"
             if node.left is not None:
                 res += f"{node.val} -> {node.left.val};\n"
             if node.right is not None:
@@ -121,35 +129,46 @@ class AVLTree:
         res += '}'
         return res
 
-    def findlargestnode(self, node):
-        if node is None or node.right is None:
-            return node
-        else:
-            return self.findlargestnode(node.right)
+    def get_nodes(self):
+        def get_nodes_r(node):
+            if node is None:
+                return
+            res.append(node)
+            get_nodes_r(node.left)
+            get_nodes_r(node.right)
+        res = []
+        get_nodes_r(self.root)
+        return res
 
-    def delete(self, node, val):
-        if node is None:
-            print("value not found")
-        elif val < node.data:
-            self.delete(node.left, val)
-        elif val > node.data:
-            self.delete(node.right, val)
-        elif node.left and node.left:
-            temp = self.findlargestnode(node.left)
-            node.val = temp.val
-            self.delete(node.left, temp.val)
+    def get_min_value_node(self, root):
+        current = root
+        while current.left is not None:
+            current = current.left
+        return current
+
+    def delete_(self, node, val):
+        if not node:
+            return node
+        elif val < node.val:
+            node.left = self.delete_(node.left, val)
+        elif val > node.val:
+            node.right = self.delete_(node.right, val)
         else:
-            temp = node
-            if node.left is None and node.right is None:
+            if node.left is None:
+                temp = node.right
                 node = None
-            elif node.left is not None:
-                node = node.left
-            else:
-                node = node.right
-            del (temp)
-            self.update_height(node)
-            self.bf(node)
-            self.balancing(node)
+                return temp
+            elif node.right is None:
+                temp = node.left
+                node = None
+                return temp
+            temp = self.get_min_value_node(node.right)
+            node.val = temp.val
+            node.right = self.delete_(node.right, temp.val)
+        if node is None:
+            return node
+
+        return self.balancing(node)
 
 
 if __name__ == "__main__":
